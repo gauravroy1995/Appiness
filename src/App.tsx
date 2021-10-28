@@ -15,9 +15,7 @@ const App = () => (
      * for example `loading={<SplashScreen />}`.
      * @see https://github.com/rt2zz/redux-persist/blob/master/docs/PersistGate.md
      */}
-    <PersistGate loading={null} persistor={persistor}>
       <ApplicationNavigator />
-    </PersistGate>
   </Provider>
 )
 

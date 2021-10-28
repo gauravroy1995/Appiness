@@ -1,31 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers, Middleware } from 'redux'
+import { combineReducers } from 'redux'
 import {
-  persistReducer,
   persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
 } from 'redux-persist'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
-import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
 import theme from './Theme'
+import {loginReducer} from '../Reducer/loginReducer'
 
 const reducers = combineReducers({
   theme,
-  ...Object.values(modules).reduce(
-    (acc, module) => ({
-      ...acc,
-      [module.reducerPath]: module.reducer,
-    }),
-    {},
-  ),
+  loginReducer,
 })
 
 const persistConfig = {
@@ -34,24 +20,10 @@ const persistConfig = {
   whitelist: ['theme'],
 }
 
-const persistedReducer = persistReducer(persistConfig, reducers)
+// const persistedReducer = persistReducer(persistConfig, reducers)
 
 const store = configureStore({
-  reducer: persistedReducer,
-  middleware: getDefaultMiddleware => {
-    const middlewares = getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }).concat(api.middleware as Middleware)
-
-    if (__DEV__ && !process.env.JEST_WORKER_ID) {
-      const createDebugger = require('redux-flipper').default
-      middlewares.push(createDebugger())
-    }
-
-    return middlewares
-  },
+  reducer: reducers,
 })
 
 const persistor = persistStore(store)
