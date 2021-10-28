@@ -10,20 +10,13 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@/Hooks";
 import { useLazyFetchOneQuery } from "@/Services/modules/users";
 import { changeTheme, ThemeState } from "@/Store/Theme";
-import { savePass,saveUser } from "../Actions/loginAction";
+import { savePass,saveUser,resetLogin } from "../Actions/loginAction";
 
 const ExampleContainer = () => {
   const { t } = useTranslation();
   const { Common, Fonts, Gutters, Layout } = useTheme();
   const dispatch = useDispatch();
 
-  const [userId, setUserId] = useState("9");
-  const [fetchOne] =
-    useLazyFetchOneQuery();
-
-  useEffect(() => {
-    fetchOne(userId);
-  }, [fetchOne, userId]);
 
 
   const loginData = useSelector((state) => state.loginReducer)
@@ -34,6 +27,19 @@ const ExampleContainer = () => {
 
   const onPasswordChange = (text) => {
     dispatch(savePass(text))
+  }
+
+  const resetLoginDetails = () => {
+    dispatch(resetLogin())
+  }
+
+  const onLogin = () => {
+    const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const passwordreg = /^[a-zA-Z0-9]{6,}$/;
+
+    const testUsername = emailRegex.test(loginData.username)
+    const passwordTest = passwordreg.test(loginData.password)
+    console.log(testUsername,passwordTest,'uuss')
   }
 
   return (
@@ -50,12 +56,17 @@ const ExampleContainer = () => {
       value={loginData.password}
       keyboardType="default"
       onChangeText={onPasswordChange}
+      secureTextEntry={true}
       />
      
         <Button title="Login" 
+        onPress={onLogin}
         />
         <View style={styles.emptyView}  />
-        <Button title="Reset" />
+        <Button title="Reset"
+        color="#614196"
+        onPress={resetLoginDetails}
+        />
     
     </View>
   );

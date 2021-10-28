@@ -9,3 +9,7 @@ export const saveUser = (text) => ({
   type: types.SAVE_USERNAME,
   payload: text,
 });
+
+export const resetLogin = () => ({
+    type: types.RESET,
+  });
