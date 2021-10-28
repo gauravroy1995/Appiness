@@ -9,9 +9,9 @@ const INITIAL_STATE = {
 
 export const loginReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case types.SAVE_PASS:
-      return { ...state, username: action.payload }
     case types.SAVE_USERNAME:
+      return { ...state, username: action.payload }
+    case types.SAVE_PASS:
       return { ...state, password: action.payload }
     default:
       return state;
