@@ -12,7 +12,7 @@ import { useLazyFetchOneQuery } from "@/Services/modules/users";
 import { changeTheme, ThemeState } from "@/Store/Theme";
 import { savePass,saveUser,resetLogin } from "../Actions/loginAction";
 
-const ExampleContainer = () => {
+const ExampleContainer = (props) => {
   const { t } = useTranslation();
   const { Common, Fonts, Gutters, Layout } = useTheme();
   const dispatch = useDispatch();
@@ -39,6 +39,14 @@ const ExampleContainer = () => {
 
     const testUsername = emailRegex.test(loginData.username)
     const passwordTest = passwordreg.test(loginData.password)
+    const isUsernameValid = loginData.username === 'Employee_One@gmail.com'
+    const isPasswordValid = loginData.password === 'Employee123'
+
+    if(!testUsername || !passwordTest || !isUsernameValid || !isPasswordValid){
+      return null
+    }
+
+    props.navigation.navigate("User")
     console.log(testUsername,passwordTest,'uuss')
   }
 
