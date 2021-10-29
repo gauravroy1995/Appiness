@@ -33,6 +33,16 @@ const ExampleContainer = (props) => {
     dispatch(resetLogin())
   }
 
+  useEffect(() => {
+    const unsubscribe =props. navigation.addListener('focus', () => {
+      // do something
+      resetLoginDetails()
+    });
+
+    return unsubscribe;
+  }, [props.navigation]);
+
+
   const onLogin = () => {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordreg = /^[a-zA-Z0-9]{6,}$/;
@@ -47,7 +57,6 @@ const ExampleContainer = (props) => {
     }
 
     props.navigation.navigate("User")
-    console.log(testUsername,passwordTest,'uuss')
   }
 
   return (
